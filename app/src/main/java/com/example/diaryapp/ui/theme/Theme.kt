@@ -106,6 +106,7 @@ fun DiaryAppTheme(
         }
     }
 
+    // for status and navigation bar
     SideEffect {
         val window = (view.context as Activity).window
 
