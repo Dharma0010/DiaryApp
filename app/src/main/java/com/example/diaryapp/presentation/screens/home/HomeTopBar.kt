@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 fun HomeTopBar(onMenuClicked: () -> Unit) {
     TopAppBar(
         navigationIcon = {
-            IconButton(onClick = { onMenuClicked }) {
+            IconButton(onClick =  onMenuClicked ) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = "Hamburger menu icon",
