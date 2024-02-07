@@ -63,7 +63,7 @@ fun HomeContent(
 @Composable
 fun DateHeader(localDate: LocalDate) {
     Row(
-        modifier =Modifier.padding(vertical = 14.dp).background(MaterialTheme.colorScheme.surface).fillMaxWidth(),
+        modifier =Modifier.background(MaterialTheme.colorScheme.surface).padding(vertical = 14.dp).fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(horizontalAlignment = Alignment.End) {
