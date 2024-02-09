@@ -14,7 +14,7 @@ import com.example.diaryapp.model.Mood
 @Composable
 fun WriteScreen(
     uiState: UiState,
-    selectedDiary: Diary?,
+    moodName: () -> String,
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     pagerState: PagerState,
@@ -29,7 +29,8 @@ fun WriteScreen(
             WriteTopBar(
                 onBackPressed = onBackPressed,
                 onDeleteConfirmed = onDeleteConfirmed,
-                selectedDiary = selectedDiary
+                selectedDiary = uiState.selectedDiary,
+                moodName = moodName
             )
         },
         content = {
