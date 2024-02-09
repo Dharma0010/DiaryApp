@@ -19,7 +19,8 @@ fun WriteScreen(
     onDescriptionChanged: (String) -> Unit,
     pagerState: PagerState,
     onDeleteConfirmed: ()-> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    onSaveClicked: (Diary) -> Unit
 ) {
     LaunchedEffect(key1 = uiState.mood, block = {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
@@ -40,7 +41,9 @@ fun WriteScreen(
                 onTitleChanged = onTitleChanged,
                 description = uiState.description,
                 onDescriptionChanged = onDescriptionChanged,
-                paddingValues = it
+                paddingValues = it,
+                uiState = uiState,
+                onSaveClicked = onSaveClicked
             )
         }
     )

@@ -14,6 +14,7 @@ import com.example.diaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.example.diaryapp.util.RequestState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.mongodb.kbson.ObjectId
 
 class WriteViewModel(
@@ -61,8 +62,26 @@ class WriteViewModel(
     fun setMood(mood: Mood) {
         uiState = uiState.copy(mood = mood)
     }
-    fun setDiary(diary: Diary) {
+    private fun setDiary(diary: Diary) {
         uiState = uiState.copy(selectedDiary = diary)
+    }
+    fun inserDiary(
+        diary: Diary,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = MongoDb.addNewDiary(diary = diary)
+            if (result is RequestState.Success) {
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } else if (result is RequestState.Error) {
+                withContext(Dispatchers.Main) {
+                    onError(result.error.message.toString())
+                }
+            }
+        }
     }
 }
 
