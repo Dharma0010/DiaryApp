@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +23,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.data.repository.MongoDb
-import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
@@ -211,7 +209,7 @@ fun NavGraphBuilder.writeRoute(
             onDeleteConfirmed = {},
             onBackPressed = onBackPressed,
             onSaveClicked = {
-                viewModel.inserDiary(
+                viewModel.upsertDiary(
                     diary = it.apply { mood = Mood.values()[pageNumber].name },
                     onSuccess = { onBackPressed() },
                     onError = {}
