@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.diaryapp.data.repository.MongoDb
+import com.example.diaryapp.model.GalleryImage
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
@@ -35,7 +36,8 @@ import com.example.diaryapp.presentation.screens.write.WriteScreen
 import com.example.diaryapp.presentation.screens.write.WriteViewModel
 import com.example.diaryapp.util.Constants.APP_ID
 import com.example.diaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
+import com.example.diaryapp.model.rememberGalleryState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -203,6 +205,7 @@ fun NavGraphBuilder.writeRoute(
         val pageNumber by remember {
             derivedStateOf { pagerState.currentPage }
         }
+        val galleryState = rememberGalleryState()
 
         LaunchedEffect(key1 = uiState, block = {
             Log.d("Selecteddiary", "${uiState.selectedDiaryId}")
@@ -244,6 +247,15 @@ fun NavGraphBuilder.writeRoute(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+                )
+            },
+            galleryState = galleryState,
+            onImageSelect = {
+                galleryState.addImage(
+                    GalleryImage(
+                        image = it,
+                        remoteImagePath = ""
+                    )
                 )
             }
         )

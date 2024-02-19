@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.diaryapp.R
 import com.example.diaryapp.data.repository.Diaries
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
