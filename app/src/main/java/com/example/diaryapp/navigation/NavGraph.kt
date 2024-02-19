@@ -74,7 +74,8 @@ fun SetupNavGraph(
         writeRoute(
             onBackPressed = {
                 navController.popBackStack()
-            }
+            },
+            onDataLoaded = onDataLoaded
         )
     }
 }
@@ -182,7 +183,8 @@ fun NavGraphBuilder.homeRoute(
 }
 @OptIn(ExperimentalFoundationApi::class)
 fun NavGraphBuilder.writeRoute(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    onDataLoaded: () -> Unit
 ) {
     composable(route = Screen.write.route,
         arguments = listOf(navArgument(name = WRITE_SCREEN_ARGUMENT_KEY) {
@@ -191,6 +193,9 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
+        LaunchedEffect(key1 = Unit) {
+            onDataLoaded()
+        }
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val context = LocalContext.current
