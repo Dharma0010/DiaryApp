@@ -17,6 +17,7 @@ import com.example.diaryapp.navigation.Screen
 import com.example.diaryapp.navigation.SetupNavGraph
 import com.example.diaryapp.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constants.APP_ID
+import com.google.firebase.FirebaseApp
 import io.realm.kotlin.mongodb.App
 
 class MainActivity : ComponentActivity() {
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
             // to fix blank screen
             keepSplashOpened
         }
+        FirebaseApp.initializeApp(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             DiaryAppTheme {
