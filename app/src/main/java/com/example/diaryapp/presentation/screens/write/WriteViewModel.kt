@@ -110,6 +110,7 @@ class WriteViewModel(
         })
         if (result is RequestState.Success) {
             withContext(Dispatchers.Main) {
+                uploadImagesToFirebase()
                 onSuccess()
             }
         } else if (result is RequestState.Error) {
@@ -133,6 +134,7 @@ class WriteViewModel(
             }
         })
         if (result is RequestState.Success) {
+            uploadImagesToFirebase()
             withContext(Dispatchers.Main) {
                 onSuccess()
             }
@@ -173,6 +175,13 @@ class WriteViewModel(
         )
     }
 
+    private fun uploadImagesToFirebase() {
+        val storage = FirebaseStorage.getInstance().reference
+        galleryState.images.forEach { galleryImage ->
+            val imagePath = storage.child(galleryImage.remoteImagePath)
+            imagePath.putFile(galleryImage.image)
+        }
+    }
 }
 
 data class UiState(
