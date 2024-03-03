@@ -15,8 +15,11 @@ import com.example.diaryapp.model.GalleryState
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.example.diaryapp.model.RequestState
+import com.example.diaryapp.util.fetchImageFirebase
 import com.example.diaryapp.util.toRealmInstant
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
@@ -60,12 +63,33 @@ class WriteViewModel(
                             setTitle(title = diary.data.title)
                             setDescription(description = diary.data.description)
                             setMood(mood = Mood.valueOf(diary.data.mood))
+
+                            fetchImageFirebase(
+                                remoteImagePaths = diary.data.images,
+                                onImageDownload = { donwloadImage ->
+                                    galleryState.addImage(
+                                        GalleryImage(
+                                            image = donwloadImage,
+                                            remoteImagePath = extractImagepath(
+                                                fullImageUrl = donwloadImage.toString()
+                                            )
+                                        )
+                                    )
+                                }
+                            )
                         }
                     }
 
             }
         }
     }
+
+    private fun extractImagepath(fullImageUrl: String): String {
+        val chunks = fullImageUrl.split("%2f")
+        val imageName = chunks[2].split("?").first()
+        return "images/${Firebase.auth.currentUser?.uid}/$imageName"
+    }
+
     fun setTitle(title: String) {
         uiState = uiState.copy(title = title)
     }
