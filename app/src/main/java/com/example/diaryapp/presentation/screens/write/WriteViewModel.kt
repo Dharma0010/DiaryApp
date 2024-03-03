@@ -70,7 +70,7 @@ class WriteViewModel(
                                     galleryState.addImage(
                                         GalleryImage(
                                             image = donwloadImage,
-                                            remoteImagePath = extractImagepath(
+                                            remoteImagePath = extractImagePath(
                                                 fullImageUrl = donwloadImage.toString()
                                             )
                                         )
@@ -84,8 +84,8 @@ class WriteViewModel(
         }
     }
 
-    private fun extractImagepath(fullImageUrl: String): String {
-        val chunks = fullImageUrl.split("%2f")
+    private fun extractImagePath(fullImageUrl: String): String {
+        val chunks = fullImageUrl.split("%2F")
         val imageName = chunks[2].split("?").first()
         return "images/${Firebase.auth.currentUser?.uid}/$imageName"
     }
