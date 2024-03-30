@@ -12,16 +12,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.example.diaryapp.data.ImageToUploadDao
 import com.example.diaryapp.navigation.Screen
 import com.example.diaryapp.navigation.SetupNavGraph
 import com.example.diaryapp.ui.theme.DiaryAppTheme
 import com.example.diaryapp.util.Constants.APP_ID
+import com.example.diaryapp.util.retryUploadingImageToFirebase
 import com.google.firebase.FirebaseApp
 import io.realm.kotlin.mongodb.App
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
+    @Inject
+    lateinit var imageToUploadDao: ImageToUploadDao
     var keepSplashOpened = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +52,25 @@ class MainActivity : ComponentActivity() {
                     }
                 )
             }
+        }
+        cleanUpCheck(scope = lifecycleScope, imageToUploadDao = imageToUploadDao)
+    }
+}
+private fun cleanUpCheck(
+    scope: CoroutineScope,
+    imageToUploadDao: ImageToUploadDao
+) {
+    scope.launch(Dispatchers.IO) {
+        val result = imageToUploadDao.getAllImages()
+        result.forEach { imageToUpload ->
+            retryUploadingImageToFirebase(
+                imageToUpload = imageToUpload,
+                onSuccess = {
+                    scope.launch(Dispatchers.IO) {
+                        imageToUploadDao.cleanUpImage(imageId = imageToUpload.id)
+                    }
+                }
+            )
         }
     }
 }

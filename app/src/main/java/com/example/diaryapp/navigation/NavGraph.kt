@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 
@@ -202,7 +203,7 @@ fun NavGraphBuilder.writeRoute(
         LaunchedEffect(key1 = Unit) {
             onDataLoaded()
         }
-        val viewModel: WriteViewModel = viewModel()
+        val viewModel: WriteViewModel = hiltViewModel()
         val uiState = viewModel.uiState
         val context = LocalContext.current
         val pagerState = rememberPagerState(pageCount = { Mood.values().size })
